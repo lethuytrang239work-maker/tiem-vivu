@@ -366,10 +366,10 @@ input,select,textarea{cursor:text}
   </div>
 </div>
 
-<!-- MODAL: THÊM ĐỒ -->
+<!-- MODAL: THÊM / SỬA ĐỒ -->
 <div class="ov dn" id="mo-item">
   <div class="mo-box">
-    <div class="mo-hd"><h3>Thêm đồ cho thuê</h3><button class="mo-x" onclick="closeModal('mo-item')">×</button></div>
+    <div class="mo-hd"><h3 id="mo-item-title">Thêm đồ cho thuê</h3><button class="mo-x" onclick="closeModal('mo-item')">×</button></div>
     <div class="mo-bd">
       <div class="fr">
         <div class="fg"><label class="lbl">Tên đồ *</label><input class="inp" id="i-name" placeholder="Jacket LCK 2026"></div>
@@ -397,7 +397,7 @@ input,select,textarea{cursor:text}
           <div class="fg"><label class="lbl">Giá chung JK (đ)</label><input class="inp" type="number" id="i-pc" placeholder="50000" min="0"></div>
         </div>
       </div>
-      <button class="sub-btn" onclick="saveItem()">Lưu đồ</button>
+      <button class="sub-btn" id="i-submit-btn" onclick="saveItem()">Lưu đồ</button>
     </div>
   </div>
 </div>
@@ -435,7 +435,7 @@ const sb = supabase.createClient(SB_URL, SB_KEY);
 
 let ROLE=null, CUST_NAME='';
 let ITEMS=[], ORDERS=[], CUSTS=[];
-let EDITING_ORDER=null;
+let EDITING_ORDER=null, EDITING_ITEM=null;
 let CAL_YEAR=new Date().getFullYear(), CAL_MONTH=new Date().getMonth();
 let DRAG_ID=null, ACTS=[];
 
@@ -725,6 +725,7 @@ function renderItems(){
       </div>
       <div style="display:flex;gap:7px">
         <button class="btn p s" onclick="openOrderModal(null,'${it.id}')" style="flex:1;justify-content:center">＋ Tạo đơn</button>
+        <button class="btn g s" onclick="openItemModal('${it.id}')" title="Sửa đồ">✏️</button>
         <button class="btn s d" onclick="delItem('${it.id}')">🗑</button>
       </div>
     </div>`;
@@ -883,20 +884,72 @@ async function saveOrder(){
 }
 
 function onITypeChange(){const acc=$('i-type').value==='Phụ kiện';$('i-days-prices').classList.toggle('dn',acc);$('i-acc-prices').classList.toggle('dn',!acc);}
-function openItemModal(){['i-name','i-p1','i-p2','i-p3','i-pr','i-pc'].forEach(id=>$(id).value='');$('i-type').value='Áo';$('i-size').value='L';onITypeChange();$('mo-item').classList.remove('dn');}
+
+function openItemModal(itemId=null){
+  EDITING_ITEM=itemId;
+  if(itemId){
+    // Chế độ SỬA — điền sẵn dữ liệu
+    const it=ITEMS.find(i=>i.id===itemId);
+    if(!it)return;
+    $('mo-item-title').textContent='Sửa đồ — '+it.name;
+    $('i-submit-btn').textContent='Cập nhật đồ';
+    $('i-name').value=it.name;
+    $('i-size').value=it.size||'L';
+    $('i-type').value=it.type;
+    // Disable thay đổi loại khi sửa (để tránh lỗi logic giá)
+    $('i-type').disabled=true;
+    onITypeChange();
+    if(it.type==='Phụ kiện'){
+      $('i-pr').value=it.p_rieng||'';
+      $('i-pc').value=it.p_chung_jk||'';
+    } else {
+      $('i-p1').value=it.p1||'';
+      $('i-p2').value=it.p2||'';
+      $('i-p3').value=it.p3||'';
+    }
+  } else {
+    // Chế độ THÊM MỚI — form trắng
+    $('mo-item-title').textContent='Thêm đồ cho thuê';
+    $('i-submit-btn').textContent='Lưu đồ';
+    $('i-type').disabled=false;
+    ['i-name','i-p1','i-p2','i-p3','i-pr','i-pc'].forEach(id=>$(id).value='');
+    $('i-type').value='Áo';$('i-size').value='L';
+    onITypeChange();
+  }
+  $('mo-item').classList.remove('dn');
+}
 
 async function saveItem(){
   const name=$('i-name').value.trim();
   if(!name){toast('Nhập tên đồ!','er');return;}
   const type=$('i-type').value;
-  const id=genItemId(type);
-  const base={id,name,size:$('i-size').value,type};
-  if(type==='Phụ kiện')Object.assign(base,{p_rieng:parseInt($('i-pr').value)||0,p_chung_jk:parseInt($('i-pc').value)||0});
-  else Object.assign(base,{p1:parseInt($('i-p1').value)||0,p2:parseInt($('i-p2').value)||0,p3:parseInt($('i-p3').value)||0});
-  console.log('Inserting item:',base);
-  const{error}=await sb.from('items').insert(base);
-  if(error){toast('Lỗi: '+error.message,'er');console.error('insert item error:',error);return;}
-  ITEMS.push(base);closeModal('mo-item');renderItems();toast('Đã thêm '+name,'ok');
+
+  if(EDITING_ITEM){
+    // ── CẬP NHẬT đồ đã có ──
+    const it=ITEMS.find(i=>i.id===EDITING_ITEM);
+    if(!it)return;
+    const payload={name,size:$('i-size').value};
+    if(type==='Phụ kiện')Object.assign(payload,{p_rieng:parseInt($('i-pr').value)||0,p_chung_jk:parseInt($('i-pc').value)||0});
+    else Object.assign(payload,{p1:parseInt($('i-p1').value)||0,p2:parseInt($('i-p2').value)||0,p3:parseInt($('i-p3').value)||0});
+    const{error}=await sb.from('items').update(payload).eq('id',EDITING_ITEM);
+    if(error){toast('Lỗi: '+error.message,'er');console.error(error);return;}
+    Object.assign(it,payload);
+    addAct('Sửa đồ '+name);
+    toast('Đã cập nhật '+name,'ok');
+  } else {
+    // ── THÊM MỚI ──
+    const id=genItemId(type);
+    const base={id,name,size:$('i-size').value,type};
+    if(type==='Phụ kiện')Object.assign(base,{p_rieng:parseInt($('i-pr').value)||0,p_chung_jk:parseInt($('i-pc').value)||0});
+    else Object.assign(base,{p1:parseInt($('i-p1').value)||0,p2:parseInt($('i-p2').value)||0,p3:parseInt($('i-p3').value)||0});
+    const{error}=await sb.from('items').insert(base);
+    if(error){toast('Lỗi: '+error.message,'er');console.error('insert item error:',error);return;}
+    ITEMS.push(base);
+    addAct('Thêm đồ mới '+name);
+    toast('Đã thêm '+name,'ok');
+  }
+  $('i-type').disabled=false;
+  closeModal('mo-item');renderItems();
 }
 
 function openCustModal(){['c-name','c-phone','c-addr','c-cccd'].forEach(id=>$(id).value='');$('c-type').value='GĐTT';$('mo-cust').classList.remove('dn');}

@@ -505,7 +505,7 @@ input,select,textarea{cursor:text}
             <div style="font-size:20px;font-weight:900">👕 Kho đồ cho thuê</div>
             <p style="font-size:12px;color:var(--muted);margin-top:3px">Bấm 📅 để xem lịch trống từng đồ</p>
           </div>
-          <a href="https://m.me/tiemvivu" target="_blank"
+          <a href="https://www.facebook.com/tiem.vivu" target="_blank"
             style="text-decoration:none;padding:10px 20px;border-radius:10px;background:var(--red);color:#fff;font-weight:800;font-size:13px;flex-shrink:0">
             💬 Đặt thuê ngay
           </a>
@@ -640,20 +640,20 @@ input,select,textarea{cursor:text}
           <div class="fg"><label class="lbl">Giá 1 ngày (đ)</label><input class="inp" type="number" id="i-p1" placeholder="200000" min="0"></div>
           <div class="fg"><label class="lbl">Giá 2 ngày (đ)</label><input class="inp" type="number" id="i-p2" placeholder="300000" min="0"></div>
         </div>
-        <div class="fg"><label class="lbl">Giá 3+ ngày (đ)</label><input class="inp" type="number" id="i-p3" placeholder="380000" min="0"></div>
+        <div class="fg"><label class="lbl">Giá 3 ngày (đ)</label><input class="inp" type="number" id="i-p3" placeholder="380000" min="0"></div>
       </div>
       <div id="i-acc-prices" class="dn">
         <div class="fr">
           <div class="fg"><label class="lbl">Giá riêng 1 ngày (đ)</label><input class="inp" type="number" id="i-pr1" placeholder="80000" min="0"></div>
           <div class="fg"><label class="lbl">Giá riêng 2 ngày (đ)</label><input class="inp" type="number" id="i-pr2" placeholder="120000" min="0"></div>
         </div>
-        <div class="fg"><label class="lbl">Giá riêng 3+ ngày (đ)</label><input class="inp" type="number" id="i-pr3" placeholder="150000" min="0"></div>
+        <div class="fg"><label class="lbl">Giá riêng 3 ngày (đ)</label><input class="inp" type="number" id="i-pr3" placeholder="150000" min="0"></div>
         <div style="height:1px;background:var(--line);margin:8px 0"></div>
         <div class="fr">
           <div class="fg"><label class="lbl">Giá chung JK 1 ngày (đ)</label><input class="inp" type="number" id="i-pc1" placeholder="50000" min="0"></div>
           <div class="fg"><label class="lbl">Giá chung JK 2 ngày (đ)</label><input class="inp" type="number" id="i-pc2" placeholder="80000" min="0"></div>
         </div>
-        <div class="fg"><label class="lbl">Giá chung JK 3+ ngày (đ)</label><input class="inp" type="number" id="i-pc3" placeholder="100000" min="0"></div>
+        <div class="fg"><label class="lbl">Giá chung JK 3 ngày (đ)</label><input class="inp" type="number" id="i-pc3" placeholder="100000" min="0"></div>
       </div>
       <button class="sub-btn" id="i-submit-btn" onclick="saveItem()">Lưu đồ</button>
     </div>
@@ -1127,7 +1127,7 @@ function renderItems(){
       <div class="ips">
         ${acc
           ?`<div class="pb hi"><div class="pl">Riêng 1ng</div><div class="pv r">${fmtK(it.pr1)}</div></div><div class="pb"><div class="pl">Riêng 2ng</div><div class="pv">${fmtK(it.pr2)}</div></div><div class="pb" style="background:var(--green-bg)"><div class="pl">Chung 1ng</div><div class="pv" style="color:var(--green)">${fmtK(it.pc1)}</div></div>`
-          :`<div class="pb hi"><div class="pl">1 ngày</div><div class="pv r">${fmtK(it.p1)}</div></div><div class="pb"><div class="pl">2 ngày</div><div class="pv">${fmtK(it.p2)}</div></div><div class="pb"><div class="pl">3+ ngày</div><div class="pv">${fmtK(it.p3)}</div></div>`
+          :`<div class="pb hi"><div class="pl">1 ngày</div><div class="pv r">${fmtK(it.p1)}</div></div><div class="pb"><div class="pl">2 ngày</div><div class="pv">${fmtK(it.p2)}</div></div><div class="pb"><div class="pl">3 ngày</div><div class="pv">${fmtK(it.p3)}</div></div>`
         }
       </div>
       <div style="display:flex;gap:7px">
@@ -1216,7 +1216,7 @@ function renderCustView(){
       <div style="font-size:40px;margin-bottom:12px">📭</div>
       <div style="font-size:15px;font-weight:800;margin-bottom:6px">Chưa có đơn thuê nào</div>
       <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Liên hệ Tiệm Vivu để đặt lịch thuê áo nhé!</p>
-      <a href="https://m.me/tiemvivu" target="_blank" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 24px;border-radius:10px;background:var(--red);color:#fff;font-weight:800;font-size:14px">💬 Liên hệ đặt thuê ngay</a>
+      <a href="https://www.facebook.com/tiem.vivu" target="_blank" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 24px;border-radius:10px;background:var(--red);color:#fff;font-weight:800;font-size:14px">💬 Liên hệ đặt thuê ngay</a>
     </div>`;
     return;
   }
@@ -1259,7 +1259,7 @@ function renderCustView(){
       </div>
       ${o.note?`<div style="font-size:12px;color:var(--muted);font-style:italic;padding:8px 10px;background:var(--bg);border-radius:7px">💬 ${o.note}</div>`:''}
     </div>`;
-  }).join('')+`<a href="https://m.me/tiemvivu" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;padding:13px;border-radius:10px;background:var(--red);color:#fff;font-weight:800;font-size:14px;margin-top:4px">💬 Muốn thuê thêm? Liên hệ ngay</a>`;
+  }).join('')+`<a href="https://www.facebook.com/tiem.vivu" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;padding:13px;border-radius:10px;background:var(--red);color:#fff;font-weight:800;font-size:14px;margin-top:4px">💬 Muốn thuê thêm? Liên hệ ngay</a>`;
 }
 
 function renderCustItems(){
@@ -1277,7 +1277,7 @@ function renderCustItems(){
       <div class="ips">
         ${acc
           ?`<div class="pb hi"><div class="pl">Riêng 1ng</div><div class="pv r">${fmtK(it.pr1)}</div></div><div class="pb"><div class="pl">Riêng 2ng</div><div class="pv">${fmtK(it.pr2)}</div></div><div class="pb" style="background:var(--green-bg)"><div class="pl">Chung 1ng</div><div class="pv" style="color:var(--green)">${fmtK(it.pc1)}</div></div>`
-          :`<div class="pb hi"><div class="pl">1 ngày</div><div class="pv r">${fmtK(it.p1)}</div></div><div class="pb"><div class="pl">2 ngày</div><div class="pv">${fmtK(it.p2)}</div></div><div class="pb"><div class="pl">3+ ngày</div><div class="pv">${fmtK(it.p3)}</div></div>`}
+          :`<div class="pb hi"><div class="pl">1 ngày</div><div class="pv r">${fmtK(it.p1)}</div></div><div class="pb"><div class="pl">2 ngày</div><div class="pv">${fmtK(it.p2)}</div></div><div class="pb"><div class="pl">3 ngày</div><div class="pv">${fmtK(it.p3)}</div></div>`}
       </div>
       <button class="btn g s" onclick="openCustCalFor('${it.id}')" style="width:100%;justify-content:center;margin-top:4px;font-size:12px">📅 Xem lịch trống</button>
     </div>`;
@@ -1412,7 +1412,7 @@ function updPP(){
   const s=$('o-start').value,e=$('o-end').value;
   if(!s||!e||e<s){el.innerHTML='<div style="padding:14px;text-align:center;color:var(--muted);font-size:13px">Chọn ngày hợp lệ</div>';return;}
   const hours=calcHourDiff(),tier=hoursToDayTier(hours);
-  const hLabel=hours>0?`${hours.toFixed(0)}h (${tier===1?'1 ngày':tier===2?'2 ngày':'3+ ngày'})`:'—';
+  const hLabel=hours>0?`${hours.toFixed(0)}h (${tier===1?'1 ngày':tier===2?'2 ngày':'3 ngày'})`:'—';
   const customPrice=parseInt($('o-custom-price')?.value);
   let pr=0,desc=hLabel;
   if(!isNaN(customPrice)&&customPrice>0){pr=customPrice;desc='Giá linh hoạt';}
